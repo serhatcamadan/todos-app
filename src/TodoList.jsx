@@ -1,34 +1,29 @@
-import { useState } from 'react'
+import { MdDelete } from "react-icons/md";
+import { MdOutlineRadioButtonUnchecked } from "react-icons/md";
+import { MdCheckCircleOutline } from "react-icons/md";
 
-export default function TodoList({ todos, onToggle, onDelete }) {
-    if (todos.length === 0) {
-        return <p className="text-gray-500">No todos yet!</p>
-    }
-    
+
+
+
+export default function TodoList({ todos, deleteTodo, toggleComplete }){
     return (
-        <div>
+        <ul className="flex flex-col gap-2">
             {todos.map(todo => (
-                <div key={todo.id} className="flex items-center justify-between mb-2">
-                    <div>
-                        <input
-                            type="checkbox"
-                            checked={todo.completed}
-                            onChange={() => onToggle(todo.id)}
-                            className="mr-2"
-                        />
-                        <span className={todo.completed ? "line-through" : ""}>
-                            {todo.text}
-                        </span>
-                    </div>
-                    <button 
-                    className="inline-block rounded-sm block border border-red-600 bg-red-600 
-                    px-8 py-3 text-sm font-medium text-white transition hover:scale-110 hover:shadow-xl" href="#" 
-                    onClick={() => onDelete(todo.id)}
-                    >
-                        Delete
+                <li key={todo.id} className="flex items-center gap-3 py-2 border-b border-gray-100 last:border-0">
+                    <button onClick={() => toggleComplete(todo.id)} className="cursor-pointer shrink-0">
+                        {todo.isCompleted
+                            ? <MdCheckCircleOutline className="text-xl text-teal-500" />
+                            : <MdOutlineRadioButtonUnchecked className="text-xl text-gray-400 hover:text-gray-600" />
+                        }
                     </button>
-                </div>
+                    <span className={`flex-1 text-gray-800 ${todo.isCompleted ? "line-through text-gray-400" : ""}`}>
+                        {todo.text}
+                    </span>
+                    <button onClick={() => deleteTodo(todo.id)} className="cursor-pointer shrink-0">
+                        <MdDelete className="text-xl text-red-400 hover:text-red-600" />
+                    </button>
+                </li>
             ))}
-        </div>
+        </ul>
     )
 }
